@@ -1,0 +1,11 @@
+\babel@toc {portuguese}{}\relax 
+\contentsline {section}{\numberline {1}Introdução}{3}{}%
+\contentsline {section}{\numberline {2}Conceito Básico}{3}{}%
+\contentsline {subsection}{\numberline {2.1}Como Calcular um Divisor de Tensão?}{3}{}%
+\contentsline {section}{\numberline {3}Exemplo Prático}{4}{}%
+\contentsline {section}{\numberline {4}Divisor de Tensão com 2 Resistores}{4}{}%
+\contentsline {section}{\numberline {5}Divisor de Tensão com 3 Resistores}{4}{}%
+\contentsline {section}{\numberline {6}Exercícios}{5}{}%
+\contentsline {subsection}{\numberline {6.1}Exercício 1}{5}{}%
+\contentsline {subsection}{\numberline {6.2}Exercício 2}{6}{}%
+\contentsline {subsection}{\numberline {6.3}Exercício 3}{7}{}%

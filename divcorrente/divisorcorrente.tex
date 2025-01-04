@@ -1,0 +1,194 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Divisores de Corrente}
+\author{Julio C. B. Gardona}
+\date{\today}
+
+\begin{document}
+\maketitle
+	
+\section{Introdução}
+
+Um divisor de corrente é um circuito que distribui a corrente elétrica entre dois ou mais ramos de um circuito paralelo. Assim como o divisor de tensão divide a tensão, o divisor de corrente divide a corrente total de acordo com as resistências dos ramos do circuito.
+
+\section{Estrutura do Circuito Divisor de Corrente}
+Um divisor de corrente básico consiste em dois resistores $R_1$ e $R_2$ conectados em paralelo a uma fonte de corrente $I_s$.
+\\
+\\
+\begin{figure}
+	\centering
+		\begin{circuitikz}[american]
+			\draw (0, 0) to [isource, l=$I_s$] (0, 3) -- (2, 3) to[R=$R_1$, i>_=$I_1$] (2, 0) -- (0, 0) ;
+			\draw (2, 3) -- (4, 3) to[R=$R_2$,  i>_=$I_2$] (4, 0) -- (2, 0);
+		\end{circuitikz}
+	\caption{Estrutura de um divisor de corrente}
+	\label{fig:exemplo1}
+\end{figure}
+
+
+
+\section{Como Funciona?}
+\begin{itemize}
+	\item Fonte de Corrente ($I_s$): Esta é a corrente que entra no divisor.
+	\item Resistores ($R_1$ e $R_1$): Estes resistores estão conectados em paralelo e compartilham a corrente $I_s$.
+	\item Correntes em cada ramo: A corrente se divide entre $R_1$ e $R_2$ com base nos valores de sua resistência. Importante mencionar que podemos ter uma ideia dos valores de corrente, já que ela é inversamente proporcional a resistência.
+	
+	Ex: \textit{Uma resistência $2x$ maior que outra, terá metade da corrente}.
+	
+\end{itemize}
+
+\section{Fórmula do Divisor de Corrente}
+
+A corrente em cada resistor é dada pela Lei de Ohm e a regra dos resistores em paralelo. As fórmula é:
+
+\begin{equation}
+I_x = I_s \cdot \frac{R_x}{R_t}
+\end{equation}
+
+\section{Exemplo Prático}
+
+Suponha que temos um circuito com uma corrente de $I_s = 10A$, e dois resistores em paralelo: $R_1 = 5 \Omega$ e $R_2 = 10 \Omega$. Vamos calcular as corrente $I_1$ e $I_2$:
+
+\begin{itemize}
+	\item Calculo de $I_1$
+	\begin{equation}
+	\begin{aligned}
+	I_1 &= \left(\frac{R_2}{R_1 + R_2}\right) \cdot I_s \\
+	I_1 &= \left(\frac{10}{5+10}\right) \cdot 10 \\
+	I_1 &= \left(\frac{10}{15}\right) \cdot 10 \\
+	I_1 &\approx \SI{6.6667}{\ampere}
+	\end{aligned}
+	\end{equation}
+	
+	\item Calculo de $I_2$
+	\begin{equation}
+	\begin{aligned}
+	I_2 &= \left(\frac{R_1}{R_1 + R_2}\right) \cdot I_s \\
+	I_2 &= \left(\frac{5}{5+10}\right) \cdot 10 \\
+	I_2 &= \left(\frac{5}{15}\right) \cdot 10 \\
+	I_2 &\approx \SI{3.3333}{\ampere}
+	\end{aligned}
+	\end{equation}
+	
+\end{itemize}
+
+\subsection{Verificação}
+
+Seguindo a \textbf{Lei de Kirchhoff das Correntes}, a soma das correntes em cada ramo deve ser igual a corrente total:
+
+$$
+I_1 + I_2 = 6.6667 + 3.3333 \approx \SI{10}{\ampere}
+$$ 
+
+\section{Exercícios}
+
+\subsection{Exercício 1}
+
+Sendo $I_1=3A$, e com base somente nos valores dos resistores, determine todas as correntes para a configuração na figura \ref{fig:ex1}. \textit{Não use a lei de Ohm}.
+
+\begin{figure}[h]
+	\centering
+	\begin{circuitikz}[american]
+		\draw (0, 0) to[isource, l=$I_s$] (0, 3);
+		\draw(0, 3) -- (3, 3);
+		\draw (3, 3) to[R, l2=$R_1$ and \SI{9}{\ohm}, i>_=$I_1$, *-*] (3, 0);
+		\draw (3, 3) -- (6, 3);
+		\draw (6, 3) to[R, l2=$R_2$ and \SI{18}{\ohm}, i>_=$I_2$, *-*] (6, 0);
+		\draw (6, 3) -- (9, 3);
+		\draw (9, 3) to[R, l2=$R_2$ and \SI{3}{\Omega}, i>_=$I_3$, *-*] (9, 0);
+		\draw (9, 3) -- (12, 3);
+		\draw (12, 3) to[R, l2^=$R_4$ and \SI{27}{\ohm}] (12, 0);
+		\draw (12, 0) -- (9, 0);
+		\draw (9, 0) -- (6, 0);
+		\draw (6, 0) -- (3, 0);
+		\draw (3, 0) -- (0, 0);
+	\end{circuitikz}
+	\caption{Exercício 1}
+	\label{fig:ex1}
+\end{figure}
+
+Usando a intuição podemos perceber que os valores dos resistores são múltiplos de 3. Logo, podemos inferir a corrente que passa por eles, pois esta é diretamente proporcional aos valores das resistências.
+
+\begin{equation}
+	\begin{aligned}
+		I_1 &= 3A \\
+		I_2 &= \frac{I_1}{2} = \frac{3}{2} = \SI{1.5}{\ampere} \\
+		I_3 &= 3 \cdot I_1 = 3 \cdot 3 = \SI{9}{\ampere} \\
+		I_4 &= \frac{I_1}{3} = \frac{3}{3} = \SI{1}{\ampere} 
+	\end{aligned}
+\end{equation}
+
+O raciocínio é simples. A corrente de $I_2$ é 2 vezes menor que a de $I_1$. A corrente de $I_3$ é 2 vezes maior, e a corrente de $I_4$ é 3 vezes menor.
+
+\subsection{Exercício 2}
+
+Determine as correntes $I_1$ e $I_2$ do circuito da figura \ref{fig:ex2} usando a regra do divisor de corrente.
+
+\begin{figure}[h]
+	\centering
+	\begin{circuitikz}[american]
+		\draw (0, 3) node[anchor=east] {A} to[short, i=$40 mA$, o-] (3, 3);
+		\draw (3, 3) to[R, i>_=$I_1$, l2=$R_1$ and \SI{3}{K\ohm}, -*] (3, 0);
+		\draw (0, 0) node[anchor=east] {B} to[short, o-] (3, 0);
+		\draw (3, 3) to[short, *-*] (6, 3)
+		to[R, i>_=$I_2$, l2=$R_2$ and \SI{10}{K\ohm}, -*](6, 0)
+		-- (3, 0);
+	\end{circuitikz}
+	\caption{Exercício 2}
+	\label{fig:ex2}
+\end{figure}
+
+
+\begin{equation}
+	\begin{aligned}
+		I_1 &= \left( \frac{R_2}{R_1 + R_2} \right) \cdot I_s \\
+		I_1 &= \left( \frac{10000}{3000 + 10000} \right) \cdot \SI{40}{\milli\ampere} = \SI{30}{\milli\ampere} \\
+		I_1 &= \left( \frac{R_1}{R_1 + R_2} \right) \cdot I_s \\
+		I_1 &= \left( \frac{3000}{3000 + 10000} \right) \cdot \SI{40}{\milli\ampere} = \SI{9}{\milli\ampere}
+	\end{aligned}
+\end{equation}
+
+\subsection{Exercício 3}
+Para o circuito da figura 3, determine as correntes desconhecidas.
+
+\begin{figure}[h]
+	\centering
+	\begin{circuitikz}[american]
+		\draw (0, 0) to[isource, o-*, l2_=$I_s$ and \SI{7}{A}] (3, 0)
+		to[short, -*] (3, 3);
+		\draw (3, 0) to[short, -*] (3, -3);
+		%\draw (3, 3) to[short, -*, i=$I_1$] (6, 3);
+		\draw (3, 3) to[R, f>^=$I_1$, l2_=$R_1$ and \SI{5}{\ohm}] (9, 3);
+		\draw (9, 3) to[short, -*] (9, 0);
+		\draw (9, 0) to[R, f>^=$I_3$, l2_=$R_3$ and \SI{12}{\ohm}] (12, 0) node[ground]{};
+		\draw (9, 3) to[short, -*] (9, -3);
+		\draw (3, -3) to[R, f>^=$I_2$, l2_=$R_2$ and \SI{15}{\ohm}] (9, -3);
+	\end{circuitikz}
+	\caption{Exercício 3}
+	\label{fig:ex3}
+\end{figure}
+
+Lembrando da \textbf{Lei de Kirchhoff das Correntes} que diz que toda corrente que entra em um nó é a mesma corrente que sai, nos permite deduzir a corrente $I_3$ como \SI{7}{\ampere}. Podemos deduzir $I_1$ e $1_2$ usando a regra dos divisores de corrente:
+
+\begin{equation}
+	\begin{aligned}
+		I_1 &= \frac{R_2}{R_1 + R_2} \cdot I_s = \frac{15}{5 + 15} \cdot 7 \approx \SI{5.25}{\ampere} \\
+		I_2 &= \frac{R_1}{R_1 + R_2} \cdot I_s = \frac{5}{5 + 15} \cdot 7 \approx \SI{1.75}{\ampere}
+	\end{aligned}
+\end{equation}
+
+Confirmamos nossos resultados somando $I_1$ e $I_2$. O resultado deve ser a corrente que sai do divisor, logo, $I_3$:
+
+\begin{equation}
+	\begin{aligned}
+		I_1 + I_2 = \SI{7}{\ampere} = 5.25 + 1.75 \approx \SI{7}{\ampere} 
+	\end{aligned}
+\end{equation} 
+
+\end{document}

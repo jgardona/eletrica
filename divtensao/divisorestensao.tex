@@ -1,0 +1,259 @@
+\documentclass[]{article}
+\usepackage[siunitx, RPvoltages]{circuitikz}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{float}
+\usepackage{imakeidx}
+
+\makeindex
+
+%opening
+\title{Divisores de Tensão}
+\author{Julio C B Gardona}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
+
+\begin{abstract}
+	
+Este texto tem por objetivo ser uma abordagem simples ao estudo de divisores de tensão. Contém exemplos de casos dos uso mais comuns, como divisores com 2 e 3 resistores, além de alguns exercícios.
+\end{abstract}
+
+\section{Introdução}
+\index{Introdução}
+A teoria do divisor de tensão é um conceito fundamental na eletrônica que \textbf{descreve como a tensão é distribuída entre resistores conectados em série} em um circuito. Em termos simples, um divisor de tensão permite obter uma tensão de saída menor a partir de uma tensão de entrada maior, usando apenas resistores.
+
+\section{Conceito Básico}
+\index{Conceito Básico}
+Quando dois ou mais resistores são conectados em série em um circuito, a corrente que passa por eles é a mesma. No entanto, a tensão é dividida entre os resistores, de forma que a soma das tensões em cada resistor seja igual à tensão total aplicada ao circuito.
+
+\subsection{Como Calcular um Divisor de Tensão?}\index{Como calcular um divisor de tensão?}
+
+Pela lei de Ohm podemos definir a equação do divisor de tensão:
+
+\begin{itemize}
+	\item A resistência equivalente $T_t$ é:
+	$$
+	R_t = \sum_{x=1}^n R_x
+	$$
+	
+	\item A tensão $V_x$ é:
+	$$
+	V_x = I_x \cdot R_x
+	$$ 
+	
+	\item A corrente total no circuito é:
+	$$
+	I_t = I_x = \frac{V_t}{R_t}
+	$$
+	
+	\item Manipulando a primeira equação, chegamos no \textit{divisor de tensão} abaixo:
+	$$
+	V_x = \frac{V_t \cdot R_x}{R_t}
+	$$
+	
+	\item Para calcular a tensão $V_x$ em cima do resistor $R_x$ com $n$ resistores:
+	$$
+	V_x = V_t \cdot \left( \frac{R_x}{R_t} \right)
+	$$
+\end{itemize}
+
+\section{Exemplo Prático}\index{Exemplo Prático}
+
+Imagine um circuito com uma fonte de tensão de $V_t=\SI{12}{\volt}$ e dois resistores $R_1=\SI{1}{\kilo\ohm}$ e $R_2=\SI{2}{\kilo\ohm}$. Calcule $ V_1$ e $V_2$:
+
+\begin{equation}
+	\centering
+	\begin{aligned}
+		R_t &= R_1 + R_2 = 1000 + 2000 = \SI{3}{\kilo\ohm} \\
+		V_1 & = V_t \cdot \frac{R_1}{R_t} = 12 \cdot \frac{1000}{3000} = \SI{4}{\volt} \\
+		V_2 & = V_t \cdot \frac{R_2}{R_t} = 12 \cdot \frac{2000}{3000} = \SI{8}{\volt}
+	\end{aligned}
+\end{equation}
+
+\section{Divisor de Tensão com 2 Resistores}\index{Divisor com 2 resistores}
+Considere projetar um circuito com 2 resistores em série, onde a corrente seja de $I_t = \SI{0.02}{\ampere}$, a tensão $V_t = \SI{3.3}{\volt}$, e $V_2 = \SI{1.5}{\volt}$.
+
+\begin{itemize}
+	\item Podemos começar por $R_2$, pois possuímos $V_2$:
+	
+	$$
+	R_2 = \frac{V_2}{I_t} = \frac{1.5}{0.02} = \SI{75}{\ohm}
+	$$
+	
+	\item Para calcular $V_1$, podemos usar a \textbf{LKT, ou Lei de Kirchhoff das Tensões}:
+	
+	$$
+	V_t - V_1 - V_2 = 3.3 - V_1 - 1.5 = \SI{1.8}{\volt}
+	$$
+	
+	\item Para $R_1$, usaremos a \textit{Lei de Ohm}:
+	
+	$$
+	R_1 = \frac{V_t}{I_t} = \frac{1.8}{0.02} = \SI{90}{\ohm}
+	$$
+\end{itemize}
+
+\section{Divisor de Tensão com 3 Resistores}\index{Divisor com 3 resistores}
+
+Considere projetar um circuito divisor de tensão, com três resistores, sendo o terceiro em paralelo com a saída de tensão. A corrente total do circuito $I_t=\SI{0.06}{\ampere}$, a tensão $V_t=\SI{3.3}{\volt}$. A carga a ser acoplada representa um \textit{LED vermelho}, que tem uma tensão direta $V_l=\SI{2}{\volt}$, e uma corrente de operação $I_l=\SI{0.03}{\ampere}$.
+
+\begin{itemize}
+	\item Começaremos por $R_l$, pois temos sua corrente e tensão:
+	
+	$$
+	R_l = \frac{V_l}{I_l} = \frac{2}{0.03} = \SI{66.666}{\ohm}
+	$$
+	
+	\item Para $R_2$:
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			R_2 &= \frac{V_l}{I_t}=\frac{2}{0.06} = \SI{33.333}{\ohm} \\
+			R_{2l} &= R_2 \parallel R_l = \frac{R_2 \cdot R_l}{R_2 + R_l} = \frac{33.333 \cdot 66.666}{33.333 + 66.666} = \SI{22.222}{\ohm}
+		\end{aligned}
+	\end{equation}
+	
+	\item Iremos calcular $R_1$. É necessário derivar a equação do divisor de tensão para encontrar seu valor:
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			V_o &= V_t \cdot \frac{R_1}{R_{2l}} = \left\{2 = 3.3 \cdot \frac{R_1}{22.222}\right\} \\
+			R_1 &= \frac{R_{2l} \cdot V_o}{V_t} = \frac{22.222 \cdot 2}{3.3} = \SI{13.467}{\ohm}
+		\end{aligned}
+	\end{equation}
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{circuitikz}[american]
+	\draw (0, 0) node[ground]{} to[vsource, v=\SI{3.3}{\volt}, f=\SI{0.06}{\ampere}] (3, 0);
+	\draw (3, 0) to[R, -*, l2_=$R_1$ and \SI{13.467}{\ohm}] (3, -3);
+	\draw (3, -3) to[R, v^=\SI{2}{\volt}, l2_=$R_l$ and \SI{66.666}{\ohm}] (6, -3) node[ground]{};
+	\draw (3, -3) to[R, l2_=$R_2$ and \SI{33.333}{\ohm}] (3, -6) node[ground]{};
+\end{circuitikz}
+\caption{Resolução}
+\label{fig:ex1}
+\end{figure}
+
+\section{Exercícios}\index{Exercícios}
+
+\subsection{Exercício 1}
+Para a configuração na figura \ref{fig:ex2}, responda:
+
+\begin{itemize}
+	\item Por inspeção visual, qual resistor receberá a maior porção da tensão aplicada?
+	
+	O resistor $R_3$.
+	
+	\item Quão maior será a tensão $V_3$, em comparação com $V_2$ e $V_1$?
+	
+	$V_3$ será 100x maior que $V_1$, e 10x maior que $V_2$. $V_3 = 10 \cdot V_2$ e $V_3 = 100 \cdot V_1$.
+	
+	\item Descubra a tensão do maior resistor usando a regra dos divisores de tensão.
+	
+	$$
+	V_2 = V_t \cdot \frac{R_3}{R_t} = \SI{30}{\volt} \cdot \frac{20000}{22200} \approx \SI{27.027}{\volt}
+	$$
+	
+	\item Descubra a tensão através de uma combinação em série dos resistores $R_2$ e $R_3$.
+	
+	$$
+	V' = V_t \cdot \frac{R_2 + R_3}{R_t} = 30 \cdot \frac{20000 + 2000}{22200} \approx \SI{29.729}{\volt}
+	$$
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[american]
+		\draw (0, 0) node[ground]{} to[vsource, v=\SI{30}{\volt}] (2, 0);
+		\draw (2, 0) to[R, l2=$R_1$ and \SI{200}{\ohm}] (2, -2);
+		\draw (2, -2) to[R, l2=$R_2$ and \SI{2}{\kilo\ohm}] (2, -4);
+		\draw (2, -4) to[R, l2=$R_3$ and \SI{20}{\kilo\ohm}] (2, -6) node[ground]{};
+	\end{circuitikz}
+	\caption{Circuito Exemplo}
+	\label{fig:ex2}
+\end{figure}
+
+\subsection{Exercício 2}
+\begin{itemize}
+	\item Projete um divisor de tensão que permitirá o uso de uma lâmpada de \SI{9}{\volt} e \SI{60}{\milli\ampere}, onde o sistema elétrico é alimentado por uma fonte de \SI{12}{\volt}.
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			R_1 &= \frac{V_t - V_l}{I_l} = \frac{12 - 9}{0.06} \approx \SI{50}{\ohm} \\
+			P_1 &= V_1 \cdot I_t = \SI{180}{\milli\watt}
+		\end{aligned}
+	\end{equation}
+	
+	\item Qual é a especificação de potência mínima do resistor calculado se estão disponíveis resistores de $\frac{1}{8}W$, $\frac{1}{4}W$ e $\frac{1}{2}W$?
+	
+	Como a potência dissipada por $R_1$ é de $\SI{180}{\milli\watt}$, podemos utilizar um resistor de $\SI{250}{\milli\watt}$.
+	
+	\item Descubra a tensão através de cada resistor na figura \ref{fig:3}, se $R_1=2R_2$ e $R_2=7R_3$.
+	
+	\begin{equation}
+		\begin{aligned}
+			V_x &= V_t \cdot \frac{R_x}{R_t} \\
+			R_t &= R_1+R_2+R_3 = 2R_2+7R_3+R_3 \\
+			R_t &= 2 \cdot 7 \cdot R_3+7R_3+R_3 = 14R_3 + 8R_3 = 22R_3 \\
+			V_3 &= V_t \cdot \frac{R_3}{R_t} = V_t \cdot \frac{R_3}{22R_3} = \frac{V_t}{22} = \frac{40}{22} = \SI{1.818}{\volt} \\
+			V_2 &= 7 \cdot V_3 = 7 \cdot 1.818 = \SI{12.727}{\volt} \\
+			V_1 &= 2 \cdot V_2 = 2 \cdot 12.727 = \SI{25.454}{\volt}
+		\end{aligned}
+	\end{equation}
+	
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american]
+			\draw (0, 0) node[ground]{} to[vsource, v=$\SI{40}{\volt}$] (0, 2.5);
+			\draw (0, 2.5) to[R, v=$V_1$, l=$R_1$] (2.5, 2.5);
+			\draw (2.5, 2.5) to[R, v=$V_2$, l=$R_2$] (2.5, 0);
+			\draw (2.5, 0) to[R, v=$V_3$, l=$R_3$] (2.5, -2.5) node[ground]{};
+		\end{circuitikz}
+		\caption{Circuito exemplo}
+		\label{fig:3}
+	\end{figure}
+	
+	
+\end{itemize}
+
+\subsection{Exercício 3}
+
+Projete um circuito divisor de tensão que permitirá uma tensão de \SI{5}{\volt} no resistor $R_2$ no circuito da figura \ref{fig:4}. Qual a especificação de potência mínima para os resistores calculados se estão disponíveis resistores de \SI{125}{\milli\watt}, \SI{250}{\milli\watt} e \SI{500}{\milli\watt}?
+
+\begin{equation}
+	\begin{aligned}
+		R_2 &= \frac{V_2}{I_t} = \frac{5}{0.04} = \SI{125}{\ohm} \\
+		V_1 &= V_t - V_2 = 12 - 5 = \SI{7}{\volt} \\
+		R_1 &= \frac{V_1}{I_t} = \frac{7}{0.04} = \SI{175}{\ohm}
+	\end{aligned}
+\end{equation}
+
+A especificação de potência mínima para $R_1$ é  de \SI{500}{\milli\watt} e para o resistor $R_2$ é de \SI{250}{\milli\watt}.
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[american]
+		\draw (0, 0) node[ground]{} to[vsource, v=\SI{12}{\volt}] (0, 2);
+		\draw (0, 2) to[short, f=\SI{40}{\milli\ampere}] (2, 2);
+		\draw (2, 2) to[R=$R_1$] (2, 0);
+		\draw (2, 0) to[R=$R_2$, v=\SI{5}{\volt}] (2, -2) node[ground]{};
+	\end{circuitikz}
+	\caption{Circuito exemplo}
+	\label{fig:4}
+\end{figure}
+
+\printindex
+
+\end{document}
