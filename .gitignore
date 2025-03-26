@@ -1,6 +1,6 @@
 divcorrente/*
 divtensao/*
-!divcorrente/divisorcorrente.pdf
-!divcorrente/divisorcorrente.tex
-!divtensao/divisortensao.pdf
-!divtensao/divisortensao.tex
+thevenin/*
+!*.svg
+!*.pdf
+!*.tex

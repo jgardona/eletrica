@@ -1,0 +1,239 @@
+\documentclass{article}
+\usepackage{tikz, tkz-euclide}
+\usepackage[siunitx]{circuitikz}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float}
+\usepackage{svg}
+\usepackage{siunitx}
+
+\title{Teorema de Thévenin}
+\author{Julio C. B. Gardona}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\begin{abstract}
+		Este documento tem por objetivo servir como estudo de caso sobre o Teorema de Thévenin e prover alguns exercícios de simplificação de circuitos com fontes dependentes e independentes. 
+	\end{abstract}
+	
+	\section{Introdução}
+	
+	O \textbf{teorema de Thévenin} afirma que u\textit{m circuito linear com dois terminais} pode ser substituído por um circuito equivalente formado por uma fonte de tensão $V_{th}$ em série com um resistor $R_{th}$, onde $V_{th}$ é a tensão de circuito aberto nos terminais, e $R_{th}$ é a resistência de entrada ou equivalente nos terminais quando as fontes independentes forem desativadas.
+	
+	O teorema é amplamente utilizado onde a carga $R_l$ é variável, obrigando o circuito a ser recalculado sempre que a carga for modificada.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (a) at (0, 0);
+			\coordinate (b) at (3, 3);
+			\coordinate (c) at (3, 0);
+			\coordinate (d) at (6, 3);
+			\coordinate (e) at (6, 0);
+			\coordinate (f) at (7, 3);
+			\coordinate (g) at (7, 0);
+			\coordinate (h) at (10, 3);
+			
+			% Draw first box
+			\draw (a) rectangle (b) node[inner sep=5px, midway, text width=50px, align=center]{Circuito linear com dois terminais};
+			\draw (b) to[short, -o, f=$I$] (d) node[above]{a} to[short] (f);
+			\draw (c) to[short, -o] (e) node[below]{b} to[short] (g);
+			% Draw second box
+			\draw (g) rectangle (h) node[inner sep=5px, midway, text width=50px, align=center]{Carga};
+			\draw (d) to[open, v=$V$] (e);
+		\end{circuitikz}
+		\caption{Circuito Original}
+		\label{fig:ex1}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		% \includesvg[width=0.8\textwidth, inkscapelatex=false]{svg/ceqthevenin}
+		\begin{circuitikz}[american, thick]
+			\coordinate (gnd) at (0, 0);
+			\coordinate (a_rth) at (0, 3);
+			\coordinate (b_rth) at (3, 3);
+			\coordinate (a_uonode) at (4, 3);
+			\coordinate (b_uonode) at (5, 3);
+			\coordinate (a_donode) at (4, 0);
+			\coordinate (b_donode) at (5, 0);
+			\coordinate (endcarga) at (8, 0);
+
+			
+			\draw (gnd) to[vsource=$V_{th}$, invert] (a_rth)
+			to[R=$R_{th}$] (b_rth)
+			to[short] (a_uonode)
+			to[short] (b_uonode);
+			\draw (a_donode) to[open, o-o, v=$V$] (a_uonode); 
+			\draw (a_donode) to[short] (gnd);
+			\draw (a_donode) to[short] (b_donode);
+			\draw (b_uonode) rectangle (endcarga) node[midway, align=center]{Carga};
+		\end{circuitikz}
+		\caption{Circuito Equivalente de Thévenin}
+		\label{fig:ex2}
+	\end{figure}
+	
+	\section{Em Circuitos com Fontes Independentes}
+	
+	Para encontrarmos $R_{th}$, os terminais $a$ e $b$ devem ser desconectados, dessa forma, nenhuma corrente fluirá por eles. Precisamos desligar todas as fontes de tensão e fontes de corrente independentes. As fontes dependentes necessitam de variáveis do circuito e não podem ser desligadas. Uma fonte de tensão \textbf{desligada} significa ser trocada por um \textit{curto circuito}, enquanto uma fonte de corrente \textbf{desligada} significa ser trocada por um \textit{circuito aberto}. A resistência equivalente desse circuito  medida nos terminais deve ser igual a $R_{th}$, ou seja,
+	
+	$$
+	R_{th} = R_{oc}
+	$$
+	
+	A tensão medida nos terminais $a$ e $b$, com a \textbf{carga desconectada} e suas \textbf{fontes ativadas}, deverão ser iguais a $V_{th}$, ou seja,
+	
+	$$
+	V_{th} = V_{oc}
+	$$
+	
+	O teorema de Thévenin é muito importante na análise de circuitos, porque ajuda a simplificar circuitos complexos, e um circuito complexo pode ser substituído por uma fonte de tensão independente e um único resistor.
+	
+	Consideraremos um circuito linear terminado por uma carga $R_l$ conforme mostra a figura 3. A corrente $I_l$ através da carga e a tensão $V_l$ na carga são facilmente determinadas, uma vez que seja obtido o circuito equivalente.
+	
+	\subsection{Problema Prático 4.8}
+	Usando o teorema de Thévenin, determine o circuito equivalente à esquerda dos terminais do circuito da figura \ref{fig:ex4}. Em seguida determine $I$.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (gnd) at (0, 0);
+			\coordinate (a) at (0, 3);
+			\coordinate (b) at (3, 3);
+			\coordinate (c) at (6, 3);
+			\coordinate (d) at (8, 3);
+			\coordinate (e) at (10, 3);
+			\coordinate (f) at (10, 0);
+			\coordinate (g) at (8, 0);
+			\coordinate (h) at (6, 0);
+			\coordinate (i) at (3, 0);
+			
+			% Implementar dispositivos em paralelo
+			
+			\draw (gnd) to [vsource=12<\volt>, invert] (a);
+			\draw (i) to [isource, l=2<\ampere>] (b);
+			\draw (h) to [R=4<\ohm>] (c);
+			\draw (g) node[above]{b} to [open, o-o] (d) node[above]{a};
+			\draw (f) to [R=1<\ohm>, f<=$I$] (e);
+			
+			% Implementar dispositivos em série
+			\draw (a) to [R=6<\ohm>] (b)
+			to [R=6<\ohm>] (c)
+			to [short] (d)
+			to [short] (e);
+			\draw (f) to [short] (g)
+			to [short] (h)
+			to [short] (i)
+			to [short] (gnd);
+		\end{circuitikz}
+		\caption{Esquema para problema prático 4.8 }
+		\label{fig:ex4}
+	\end{figure}
+	
+	Determinamos $R_{th}$ desativando a fonte de $12V$ (substituindo-a por um curto circuito) e a fonte de corrente de $2A$ (substituindo-a por um circuito aberto). Terminamos com dois resistores de $6~\Omega$ em série, e um de $4~\Omega$ em paralelo. O circuito torna-se aquele mostrado na figura \ref{fig:schfontoff} .
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			(6~\Omega + 6~\Omega) \parallel 4~\Omega &= 3~\Omega \\
+			R_{th} &= 3~\Omega
+		\end{aligned}
+	\end{equation}
+	
+	\begin{figure}[H]
+		\centering
+		% \includesvg[width=0.5\textwidth, inkscapelatex=false]{svg/rth}
+		\begin{circuitikz}[american, thick]
+			\coordinate (gnd) at (0, 0);
+			\coordinate (a) at (0, 3);
+			\coordinate (b) at (3, 3);
+			\coordinate (c) at (6, 3);
+			\coordinate (d) at (7.5, 3);
+			\coordinate (e) at (7.5, 0);
+			\coordinate (f) at (6, 0);
+			
+			% Implementar dispositivos em paralelo
+			\draw (gnd) to[short] (a);
+			\draw (c) to[R=4<\ohm>] (f);
+			\draw (d) to[open, o-o, l=$R_{th}$] (e);
+			
+			% Implementar dispositivos em série
+			\draw (a) to[R=6<\ohm>] (b) to[R=6<\ohm>] (c);
+			\draw (c) to[short, *-] (d);
+			\draw (e) to[short] (f) to[short] (gnd);
+		\end{circuitikz}
+		\caption{Circuito com as fontes desativadas.}
+		\label{fig:schfontoff}
+	\end{figure}
+	
+	Para determinar $V_{th}$ consideraremos o circuito da figura \ref{fig:vth01}. Aplicando análise nodal, obtemos
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			i_1 + 2~A &= i_2 \\
+			\frac{12 - V}{6} + 2 &= \frac{V}{6 + 4} = 15~V
+		\end{aligned}
+	\end{equation}
+	
+	Encontramos o nó $V=15~V$. O nó de $V_{th}$ está no divisor de tensão, ou seja, acima do resistor de $4~\Omega$. Logo
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			V_{th} = 15 \cdot \frac{6}{6 + 4} = 6~V
+		\end{aligned}
+	\end{equation}
+	
+	A corrente $I$ é simplesmente $I = \frac{V_{th}}{R_{th} + 1} = 1.5~A$. Esse cálculo é baseado no circuito equivalente da figura \ref{fig:equivalente1}.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (vsource_a) at (0, 0);
+			\coordinate (vsource_b) at (0, 3);
+			\coordinate (isource_u) at (3, 3);
+			\coordinate (isource_d) at (3, 0);
+			\coordinate (r4o_u) at (6, 3);
+			\coordinate (r4o_d) at (6, 0);
+			\coordinate (oc_u) at (7.5, 3);
+			\coordinate (oc_d) at (7.5, 0);
+			
+			\draw (vsource_a) to [vsource=12<\volt>, invert] (vsource_b);
+			\draw (isource_d) to [isource, l=$2A$, -*] (isource_u) node[above]{V};
+			\draw (r4o_u) to [R=4<\ohm>] (r4o_d);
+			\draw (oc_u) to[open, o-o, v=$V_{th}$] (oc_d);
+			\draw (vsource_b) to[R=6<\ohm>] (isource_u);
+			\draw (isource_u) to[R=6<\ohm>] (r4o_u);
+			\draw (vsource_a) to[short] (isource_d);
+			\draw (isource_d) to[short] (r4o_d) to[short] (oc_d);
+			\draw (r4o_u) to[short] (oc_u);
+		\end{circuitikz}
+		\caption{Determinando $V_{th}$.}
+		\label{fig:vth01}
+	\end{figure}
+	
+		\begin{figure}[H]
+		\centering
+%		\includesvg[width=0.5\textwidth, inkscapelatex=false]{svg/equivalente1}
+		\begin{circuitikz}[american, thick]
+		\coordinate (vsource-u) at (0, 3);
+		\coordinate (vsource-d) at (0, 0);
+		\coordinate (r1o-u) at (3, 3);
+		\coordinate (r1o-d) at (3, 0);
+		
+		\draw (vsource-d) to[vsource=6<\volt>, invert] (vsource-u);
+		\draw (vsource-d) to[short] (r1o-d) to[R=1<\ohm>] (r1o-u);
+		\draw (vsource-u) to[R=3<\ohm>] (r1o-u);
+		\end{circuitikz}
+		\caption{Circuito equivalente.}
+		\label{fig:equivalente1}
+	\end{figure}
+	
+	\section{Em Circuitos com Fontes Dependentes}
+
+\end{document}
