@@ -77,7 +77,7 @@
 		\label{fig:ex2}
 	\end{figure}
 	
-	\section{Em Circuitos com Fontes Independentes}
+	\section{Estudo com Fontes Dependentes e Independentes}
 	
 	Para encontrarmos $R_{th}$, os terminais $a$ e $b$ devem ser desconectados, dessa forma, nenhuma corrente fluirá por eles. Precisamos desligar todas as fontes de tensão e fontes de corrente independentes. As fontes dependentes necessitam de variáveis do circuito e não podem ser desligadas. Uma fonte de tensão \textbf{desligada} significa ser trocada por um \textit{curto circuito}, enquanto uma fonte de corrente \textbf{desligada} significa ser trocada por um \textit{circuito aberto}. A resistência equivalente desse circuito  medida nos terminais deve ser igual a $R_{th}$, ou seja,
 	
@@ -146,7 +146,6 @@
 	
 	\begin{figure}[H]
 		\centering
-		% \includesvg[width=0.5\textwidth, inkscapelatex=false]{svg/rth}
 		\begin{circuitikz}[american, thick]
 			\coordinate (gnd) at (0, 0);
 			\coordinate (a) at (0, 3);
@@ -185,7 +184,7 @@
 	\begin{equation}
 		\centering
 		\begin{aligned}
-			V_{th} = 15 \cdot \frac{6}{6 + 4} = 6~V
+			V_{th} = 15 \cdot \frac{4}{6 + 4} = 6~V
 		\end{aligned}
 	\end{equation}
 	
@@ -219,21 +218,253 @@
 	
 		\begin{figure}[H]
 		\centering
-%		\includesvg[width=0.5\textwidth, inkscapelatex=false]{svg/equivalente1}
 		\begin{circuitikz}[american, thick]
-		\coordinate (vsource-u) at (0, 3);
-		\coordinate (vsource-d) at (0, 0);
-		\coordinate (r1o-u) at (3, 3);
-		\coordinate (r1o-d) at (3, 0);
-		
-		\draw (vsource-d) to[vsource=6<\volt>, invert] (vsource-u);
-		\draw (vsource-d) to[short] (r1o-d) to[R=1<\ohm>] (r1o-u);
-		\draw (vsource-u) to[R=3<\ohm>] (r1o-u);
+			\coordinate (vsource-u) at (0, 3);
+			\coordinate (vsource-d) at (0, 0);
+			\coordinate (r1o-u) at (3, 3);
+			\coordinate (r1o-d) at (3, 0);
+			
+			\draw (vsource-d) to[vsource=6<\volt>, invert] (vsource-u);
+			\draw (vsource-d) to[short] (r1o-d) to[R=1<\ohm>] (r1o-u);
+			\draw (vsource-u) to[R=3<\ohm>] (r1o-u);
 		\end{circuitikz}
 		\caption{Circuito equivalente.}
 		\label{fig:equivalente1}
 	\end{figure}
 	
-	\section{Em Circuitos com Fontes Dependentes}
+	\subsection{Problema Prático 4.9}
+	Determine o circuito equivalente de Thévenin da figura \ref{fig:pp4.9.1}, à esquerda dos terminais $a$ e $b$.
+	
+	Esse circuito contém uma fonte dependente. Diferentemente do anterior, não podemos desligar todas as fontes. Nesse caso desligamos somente a fonte de tensão e excitamos a rede com uma fonte de tensão $v_0=1V$ conectado aos terminais $a$ e $b$ para podermos encontrar $R_{th}$. Logo, nossa análise se torna mais complicada pois precisaremos de mais processos para resolver o circuito equivalente. Abaixo, seguiremos passo a passo. 
+
+	
+	\subsubsection{Encontrando $V_{th}$}
+	
+	Para encontrar $V_{th}$, utilizaremos o circuito da figura \ref{fig:pp4.9.1}. Iremos utilizar \textbf{LKC} para encontrar a tensão no nó $p$, e toda configuração da rede, como a direção das correntes e os nós estão de acordo com a figura \ref{fig:pp4.9.2}.
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (vsource-down) at (0, 0);
+			\coordinate (vsource-up) at (0, 3);
+			\coordinate (disource-down) at (3, 0);
+			\coordinate (disource-up) at (3, 3);
+			\coordinate (r4p-up) at (6, 3);
+			\coordinate (r4p-down) at (6, 0);
+			\coordinate (open-up) at (9, 3);
+			\coordinate (open-down) at (9, 0);
+			
+			\draw (vsource-up) to[vsource=6<\volt>] (vsource-down);
+			\draw (disource-down) to[cisource, l_=$1.5 \cdot I_x$] (disource-up);
+			\draw (r4p-up) to[R=4<\ohm>] (r4p-down);
+			\draw (open-up) node[right]{a} to[open, o-o] (open-down) node[right]{b};
+			\draw (vsource-up) to[R=5<\ohm>] (disource-up);
+			\draw (disource-up) to[R=3<\ohm>, f>^=$I_x$] (r4p-up);
+			\draw (r4p-up) to[short] (open-up);
+			\draw (r4p-down) to[short] (open-down);
+			\draw(vsource-down) to[short] (disource-down) to[short] (r4p-down);
+			
+		\end{circuitikz}
+		\caption{Esquema para o problema prático 4.9}
+		\label{fig:pp4.9.1}
+	\end{figure}
+	
+	Temos duas correntes, $I_1$ e $1.5 I_x$ entrando no nó $p$. $I_x$ sai do nó. De acordo com a \textit{LKC}, $\sum I_{in} = \sum I_{out}$.
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			I_1 + 1.5 \cdot I_x &= I_x \\
+			\frac{6-V_p}{5} + 1.5 \cdot I_x &= \frac{V_p}{3+4} \\
+			V_p &\approx \SI{9.333}{\volt}
+		\end{aligned}
+	\end{equation}
+	
+	Lembrando, $I_x = \frac{V_p}{3+4}$. Nesse caso, iremos encontrar $V_{th}$ no divisor de tensão(entre os resistores de $\SI{3}{\ohm}$ e $\SI{4}{\ohm}$), no nó $a$.
+	
+	\begin{equation}
+		\centering
+		\begin{aligned}
+			V_{th} &= V_p \cdot \frac{4}{4+3} \\
+			V_{th} &\approx \SI{5.333}{\ohm} 
+		\end{aligned}
+	\end{equation}
+	
+	\begin{figure}[H]
+		\centering
+			\begin{circuitikz}[american, thick]
+				\coordinate (vsource-down) at (0, 0);
+				\coordinate (vsource-up) at (0, 3);
+				\coordinate (disource-down) at (3, 0);
+				\coordinate (disource-up) at (3, 3);
+				\coordinate (r4p-up) at (6, 3);
+				\coordinate (r4p-down) at (6, 0);
+				\coordinate (open-up) at (9, 3);
+				\coordinate (open-down) at (9, 0);
+				
+				\draw (vsource-up) to[vsource=6<\volt>] (vsource-down);
+				\draw (disource-down) to[cisource, l_=$1.5 \cdot I_x$, -*] (disource-up) node[above]{p};
+				\draw (r4p-up) to[R=4<\ohm>] (r4p-down);
+				\draw (open-up) node[right]{a} to[open, o-o] (open-down) node[right]{b};
+				\draw (vsource-up) to[R=5<\ohm>, f>^=$I_1$] (disource-up);
+				\draw (disource-up) to[R=3<\ohm>, f>=$I_x$] (r4p-up);
+				\draw (r4p-up) to[short] (open-up);
+				\draw (r4p-down) to[short] (open-down);
+				\draw(vsource-down) to[short] (disource-down) to[short] (r4p-down);
+				
+			\end{circuitikz}
+		\caption{Esquema preparado para análise nodal}
+		\label{fig:pp4.9.2}
+	\end{figure}
+	
+	\subsubsection{Encontrando $R_{th}$}
+	
+	Para encontrar $R_{th}$, precisaremos desligar a fonte de tensão de \SI{6}{\volt} e excitar a rede inserindo uma tensão(que pode ser da nossa escolha) entre os terminais $a$ e $b$. Conforme já foi mencionado acima, não podemos desligar fontes dependentes, pois essas dependem de variáveis de circuito.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (vsource-down) at (0, 0);
+			\coordinate (vsource-up) at (0, 3);
+			\coordinate (disource-down) at (3, 0);
+			\coordinate (disource-up) at (3, 3);
+			\coordinate (r4p-up) at (6, 3);
+			\coordinate (r4p-down) at (6, 0);
+			\coordinate (open-up) at (8.5, 3);
+			\coordinate (open-down) at (8.5, 0);
+			
+			\draw (vsource-up) to[short] (vsource-down);
+			\draw (disource-down) to[cisource, l_=$1.5 \cdot I_x$, -*] (disource-up) node[above]{p};
+			\draw (r4p-up) node[above, xshift=5pt]{$v_a$} to[R=4<\ohm>, f>^=$I_2$, *-] (r4p-down);
+			\draw (open-up) node[right]{a} to[open, o-o] (open-down) node[right]{b};
+			\draw (vsource-up) to[R=5<\ohm>, f<^=$I_1$] (disource-up);
+			\draw (disource-up) to[R=3<\ohm>, f>=$I_x$] (r4p-up);
+			\draw (r4p-up) to[short, f<^=$I_0$] (open-up);
+			\draw (r4p-down) to[short] (open-down);
+			\draw(vsource-down) to[short] (disource-down) to[short] (r4p-down);
+			\draw (open-up) to[vsource=1<\volt>] (open-down);
+		\end{circuitikz}
+		\caption{Encontrando $R_{th}$}
+		\label{fig:pp4.9.3}
+	\end{figure}
+	
+	O objetivo é encontrar a corrente $I_0$, e usá-la para calcular $R_{th}$.
+	
+	\begin{equation}
+		\begin{aligned}
+			R_{th} = \frac{v_a}{I_0} &= \frac{1}{I_0} \\
+			1.5 \cdot I_x &= I_1 + I_x \\
+			1.5 \cdot \frac{v_p - v_a}{3} &= \frac{v_p}{5} + \frac{v_p - v_a}{3} \\
+			1.5 \cdot \frac{v_p - 1}{3} &= \frac{v_p}{5} + \frac{v_p - 1}{3} \\
+			v_p &\approx \SI{-5.0}{\volt} \\
+			I_x + I_0 &= I_2 \\
+			\frac{v_p - 1}{3} + I_0 &= \frac{1}{4} \\
+			\frac{-5 - 1}{3} + I_0 &= \frac{1}{4} \\
+			I_0 &\approx \SI{2.250}{\ampere} \\
+			R_{th} &= \frac{v_a}{I_0} \\
+			R_{th} &= \frac{1}{2.250} \approx \SI{0.444}{\ohm}
+		\end{aligned}
+	\end{equation}
+
+	\subsection{Problema Prático 4.10}
+
+	Encontre o equivalente de Thévenin do circuito da figura \ref{fig:pp4.10}.
+	
+	\subsubsection{Definição}
+	
+	O primeiro fato a ser considerado é que, uma vez que não há nenhuma fonte independente no circuito, temos de excitá-lo externamente. Quando não há nenhuma fonte independente, não teremos um valor para $V_{th}$. Podemos encontrar apenas $R_{th}$.
+
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american, thick]
+			\coordinate (vx-down) at (0, 0);
+			\coordinate (vx-up) at (0, 3);
+			\coordinate (r15-up) at (6, 3);
+			\coordinate (r15-down) at (6, 0);
+			\coordinate (r10b) at (3, 3);
+			\coordinate (ta) at (7, 3);
+			\coordinate (tb) at (7, 0);
+
+			\draw (vx-up) to[R=5<\ohm>, v=$v_x$] (vx-down);
+			\draw (r15-down) to[R=15<\ohm>] (r15-up);
+			\draw (vx-up) to[R=10<\ohm>] (r10b);
+			\draw (r10b) to[cvsource=$4v_x$] (r15-up);
+			\draw (vx-down) to[short] (r15-down);
+			\draw (r15-up) to[short, -o] (ta) node[right]{a};
+			\draw (r15-down) to[short, -o] (tb) node[right]{b};
+		\end{circuitikz}
+		\caption{Esquema para o problema prático 4.10}
+		\label{fig:pp4.10}
+	\end{figure}
+	
+		A forma mais simples é excitar o circuito com uma fonte de tensão de \SI{1}{\volt}, ou uma fonte de corrente de \SI{1}{\ampere}. Utilizaremos uma fonte de tensão, juntamente com análise de malhas, conforme a figura \ref{fig:pp4.10.1}.
+		
+		
+			\begin{figure}[H]
+			\centering
+			\begin{circuitikz}[american, thick]
+				\coordinate (vx-down) at (0, 0);
+				\coordinate (vx-up) at (0, 3);
+				\coordinate (r15-up) at (6, 3);
+				\coordinate (r15-down) at (6, 0);
+				\coordinate (r10b) at (3, 3);
+				\coordinate (ta) at (7, 3);
+				\coordinate (tb) at (7, 0);
+				
+				\draw (vx-up) to[R=5<\ohm>, v=$v_x$] (vx-down);
+				\draw (r15-down) node[ground]{} to[R=15<\ohm>] (r15-up);
+				\draw (vx-up) to[R=10<\ohm>] (r10b);
+				\draw (r10b) to[cvsource=$4v_x$] (r15-up);
+				\draw (vx-down) to[short] (r15-down);
+				\draw (r15-up) to[short, -o] (ta) node[right]{a};
+				\draw (r15-down) to[short, -o] (tb) node[right]{b};
+				\draw (tb) to[vsource, l_=$1V$, invert] (ta);
+			\end{circuitikz}
+			\caption{Circuito excitado pela fonte de tensão de \SI{1}{\volt}}
+			\label{fig:pp4.10.1}
+		\end{figure}
+		
+		Teremos duas correntes, $I_0$ e $I_1$ fluindo no sentido contrário pelas duas malhas. Elas se encontram e seguem o mesmo sentido no resistor de \SI{15}{\ohm}, em direção à referência (0 do circuito). É importante notar quê:
+		
+		$$
+		R_{th} = \frac{v_a}{I_0} = \frac{1}{I_0}
+		$$
+		
+		Escrevemos a primeira LKT, para a corrente de malha $I_1$, conforme a equação \ref{eq:7}. 
+		
+		\begin{equation}
+			\centering
+			\begin{aligned}
+				-v_x + 10i_1 + 4vx +15(i_1 + i_0) &= 0 \\
+				3v_x + 10_i + 15i_1 + 15i_0 &= 0 \\
+				3v_x + 25i_1 + 15i_0 &= 0 \\
+				v_x &= -5 \cdot i_1 \\
+				3(-5i_1) + 25i_1 + 15i_0 &= 0 \\
+				-15i_1 + 25i_1 + 15i_0 &= 0 \\
+				15i_0 + 10i_1 &= 0
+			\end{aligned}
+			\label{eq:7}
+		\end{equation}
+		
+		Iremos escrever a segunda LKT, para a corrente de malha $I_0$, conforme a equação \ref{eq:8}.
+		
+		\begin{equation}
+			\begin{aligned}
+				15(i_0 + i_1) - 1 &= 0 \\
+				15i_0 + 15i_1 &= 1
+			\end{aligned}
+			\label{eq:8}
+		\end{equation}
+		
+		Com as duas equações para as correntes de malhas $i_1$ e $i_0$, resolvemos o sistema de equações \ref{eq:9}.
+		
+		\begin{equation}
+			\begin{cases}
+				15i_0 + 10i_1 = 0 \\
+				15i_0 + 15i_1 = 1
+			\end{cases}
+			\label{eq:9}
+		\end{equation}
+		
+		Logo, com o valor de $i_0$, podemos calcular $R_{th} = \frac{1}{-0.133} \approx \SI{-7.52}{\ohm}$.
 
 \end{document}
